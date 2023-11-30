@@ -1,6 +1,6 @@
-const SEARCH = () => {
-    const SEARCH_INPUT = document.querySelector('.search-block > input');
-    const SEARCH_BUTTON = document.getElementById('button-addon2');
+const GET_PRODUCTS = () => {
+    const LINKS = document.querySelectorAll('.navigation-link');
+    const VIEW_ALL = document.querySelector('.more');
 
     const RENDER_PRODUCTS = (products) => {
         const PRODUCTS_CONTAINER = document.querySelector('.long-goods-list');
@@ -26,13 +26,11 @@ const SEARCH = () => {
         })
     }
 
-    const GET_DATA = (value) => {
+    const GET_DATA = (value, category) => {
         fetch('/db/db.json')
             .then((response) => response.json())
             .then((data) => {
-                const ARRAY = data.filter(product => {
-                    return product.name.toLowerCase().includes(value.toLowerCase());
-                });
+                const ARRAY = category ? data.filter((item) => item[category] === value) : data;
                 localStorage.setItem('products', JSON.stringify(ARRAY));
                 if (window.location.pathname !== '/goods.html') {
                     window.location.href = '/goods.html';
@@ -43,13 +41,25 @@ const SEARCH = () => {
             })
     }
 
-    try {
-        SEARCH_BUTTON.addEventListener('click', () => {
-            GET_DATA(SEARCH_INPUT.value);
-        });
-    } catch (e) {
-        console.error(e.message);
+    LINKS.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const LINK_VALUE = link.textContent;
+            const CATEGORY = link.dataset.field;
+            GET_DATA(LINK_VALUE, CATEGORY);
+        })
+    });
+
+    if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
+        VIEW_ALL.addEventListener('click', (event) => {
+            event.preventDefault();
+            GET_DATA();
+        })
+    }
+
+    if (localStorage.getItem('products') && window.location.pathname === '/goods.html') {
+        RENDER_PRODUCTS(JSON.parse(localStorage.getItem('products')));
     }
 };
 
-SEARCH();
+GET_PRODUCTS();
