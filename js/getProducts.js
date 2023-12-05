@@ -24,7 +24,7 @@ const GET_PRODUCTS = () => {
             `;
             PRODUCTS_CONTAINER.append(PRODUCT_ELEMENT);
         })
-    }
+    };
 
     const GET_DATA = (value, category) => {
         fetch('/db/db.json')
@@ -39,7 +39,7 @@ const GET_PRODUCTS = () => {
                     RENDER_PRODUCTS(ARRAY);
                 }
             })
-    }
+    };
 
     LINKS.forEach((link) => {
         link.addEventListener('click', (event) => {
@@ -50,16 +50,16 @@ const GET_PRODUCTS = () => {
         })
     });
 
-    if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
+    if (VIEW_ALL) {
         VIEW_ALL.addEventListener('click', (event) => {
             event.preventDefault();
             GET_DATA();
         })
-    }
+    };
 
     if (localStorage.getItem('products') && window.location.pathname === '/goods.html') {
         RENDER_PRODUCTS(JSON.parse(localStorage.getItem('products')));
-    }
+    };
 };
 
 GET_PRODUCTS();

@@ -24,7 +24,7 @@ const SEARCH = () => {
             `;
             PRODUCTS_CONTAINER.append(PRODUCT_ELEMENT);
         })
-    }
+    };
 
     const GET_DATA = (value) => {
         fetch('/db/db.json')
@@ -41,7 +41,7 @@ const SEARCH = () => {
                     RENDER_PRODUCTS(ARRAY);
                 }
             })
-    }
+    };
 
     try {
         SEARCH_BUTTON.addEventListener('click', () => {
